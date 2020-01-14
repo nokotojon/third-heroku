@@ -1,0 +1,43 @@
+<div class="topic-index-wrapper">
+  <div class="container">
+    <% @topics.each do |topic| %>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="topic-index-single">
+            <h2 class="topic-author">
+              <%= topic.user.name %>
+            </h2>
+             <%= image_tag topic.image.url %>
+            <% if !topic.favorite_users.include?(current_user) %>  
+              <%= link_to favorites_path(topic_id: topic.id), method: :post do %>
+                <%= image_tag 'icons/heart-black.png', class: 'topic-index-icon' %>
+              
+              <% end %>
+            <% else %>
+            <!-- イイネ削除機能 !-->
+              <%= link_to favorites_path(topic_id: topic.id), method: :delete do %>
+                <%= image_tag 'いいねハート.jpg',class: 'topic-index-icon-heart-iine' %>
+                <%= topic.favorite_users.count %> <!-- イイネ数を数えて表示 !-->
+              <% end %>
+
+            <% end %>
+            
+                <!-- コメントのアイコンにリンクを乗せる　!-->
+                <%= link_to coments_new_path(topic_id: topic.id) do %> 
+                 <%= image_tag('icons/comment.png',class: 'topic-index-icon') %>
+                <% end %>
+            <p class="topic-text">
+              <%= topic.description %>
+            </p>
+              <h2>コメント欄</h2>
+              <% topic.coments.each do |coment| %>
+                 <p class="topic-text">
+                   <%= coment.discription %>
+                 </p>
+              <% end %>     
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
